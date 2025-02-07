@@ -1,0 +1,130 @@
+/* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  
+  .app {
+    padding: 20px;
+    background: #fcfaf8; 
+    border: 1px solid black;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 80%;
+    max-width: 800px;
+    height: 500px; 
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  
+  .app__container {
+    display: flex;
+    justify-content: space-between;
+    flex-grow: 1;
+    overflow-y: auto; 
+  }
+  
+  /* Inventory Styles */
+  .inventory {
+    flex: 1;
+    margin-right: 20px;
+  }
+  
+  .inventory__title {
+    text-align: center;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+  
+  .inventory__item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #f7f1d9;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+  }
+  
+  .inventory__name {
+    font-weight: bold;
+  }
+  
+  .inventory__quantity {
+    font-weight: bold;
+  }
+  
+  .inventory__btn {
+    background-color: #4a90e2; 
+    border: none;
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  
+  .inventory__btn--decrease {
+    background-color: #e74c3c;
+    margin: 0 5px;
+  }
+  
+  .inventory__btn--increase {
+    background-color: #4caf50; 
+    margin: 0 5px;
+  }
+  
+  .inventory__btn:hover {
+    opacity: 0.8;
+  }
+  
+  /* Cart Styles */
+  .cart {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  
+  .cart__title {
+    text-align: center;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+  
+  .cart__content {
+    flex-grow: 1;
+    overflow-y: auto;
+  }
+  
+  .cart__list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .cart__checkout {
+    width: 100%;
+    background-color: black;
+    color: white;
+    font-size: 14px;
+    padding: 10px 0;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-weight: bold;
+  }
+  
+  .cart__checkout:hover {
+    opacity: 0.8;
+  }
