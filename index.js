@@ -110,20 +110,25 @@ const View = (() => {
   console.log("Checkout Button:", checkoutButton);
 
   const renderInventory = (inventory) => {
-    inventoryContainer.innerHTML = inventory
-      .map(
-        (item) => `
-        <div class="inventory__item" data-id="${item.id}">
-          <span class="inventory__name">${item.content}</span>
-          <button class="inventory__btn inventory__btn--decrease">-</button>
-          <span class="inventory__quantity">${item.quantity}</span>
-          <button class="inventory__btn inventory__btn--increase">+</button>
-          <button class="inventory__btn inventory__btn--add">add to cart</button>
-        </div>
-      `
-      )
-      .join("");
-  };
+    inventoryContainer.innerHTML = `
+        <h2 class="inventory__title">Inventory</h2>
+        ${inventory
+          .map(
+            (item) => `
+            <div class="inventory__item" data-id="${item.id}">
+              <span class="inventory__name">${item.content}</span>
+              <button class="inventory__btn inventory__btn--decrease">-</button>
+              <span class="inventory__quantity">${item.quantity}</span>
+              <button class="inventory__btn inventory__btn--increase">+</button>
+              <button class="inventory__btn inventory__btn--add">add to cart</button>
+            </div>
+          `
+          )
+          .join("")}
+    `;
+
+    console.log("Rendered Inventory:", inventory);
+};
 
   return {
     renderInventory,
