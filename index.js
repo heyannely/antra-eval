@@ -234,22 +234,26 @@ const Controller = ((model, view) => {
   
       console.log(`✏️ Editing item: ${item.content}, current quantity: ${item.quantity}`);
   
-      //  new list item 
+
       const editItem = document.createElement("li");
       editItem.classList.add("cart__item");
       editItem.dataset.id = item.id;
       editItem.innerHTML = `
         <span class="cart__name">${item.content}</span>
-        <button class="cart__btn cart__btn--decrease">-</button>
-        <span class="cart__quantity">${item.quantity}</span>
-        <button class="cart__btn cart__btn--increase">+</button>
+
+        <div class="cart__controls">
+          <button class="cart__btn cart__btn--decrease">-</button>
+          <span class="cart__quantity">${item.quantity}</span>
+          <button class="cart__btn cart__btn--increase">+</button>
+        </div>
+
         <button class="cart__btn cart__btn--save">Save</button>
       `;
   
       // Replace cart item
       parentEl.replaceWith(editItem);
   
-      // Edit mode quanity
+      // Edit mode quantity
       editItem.querySelector(".cart__btn--increase").addEventListener("click", () => {
         item.quantity += 1;
         editItem.querySelector(".cart__quantity").textContent = item.quantity;
