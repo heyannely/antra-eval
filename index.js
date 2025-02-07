@@ -160,10 +160,6 @@ const Controller = ((model, view) => {
   // implement your logic for Controller
   const state = new model.State();
 
-  const handleQuantityChange = () => {
-    
-  };
-
   const handleAddToCart = () => {
     view.inventoryContainer.addEventListener("click", (event) => {
       const target = event.target;
@@ -209,7 +205,76 @@ const Controller = ((model, view) => {
     });
   };
 
-  const handleEdit = () => {};
+  const handleEdit = () => {
+    view.cartContainer.addEventListener("click", (event) => {
+      const target = event.target;
+      const parentEl = target.closest(".cart__item");
+      if (!parentEl) return;
+  
+      if (!target.classList.contains("cart__btn--edit")) return;
+  
+      const id = Number(parentEl.dataset.id);
+      
+      if (!state.cart || state.cart.length === 0) {
+        console.error("ERROR: Cart is empty or not updated yet.");
+        return;
+      }
+  
+      let item = state.cart.find((cartItem) => Number(cartItem.id) === id);
+  
+      if (!item) {
+        console.error("ERROR: Item not found in state.cart:", id);
+        console.log("Current state.cart:", state.cart);
+        return;
+      }
+  
+      console.log(`✏️ Editing item: ${item.content}, current quantity: ${item.quantity}`);
+  
+      //  new list item 
+      const editItem = document.createElement("li");
+      editItem.classList.add("cart__item");
+      editItem.dataset.id = item.id;
+      editItem.innerHTML = `
+        <span class="cart__name">${item.content}</span>
+        <button class="cart__btn cart__btn--decrease">-</button>
+        <span class="cart__quantity">${item.quantity}</span>
+        <button class="cart__btn cart__btn--increase">+</button>
+        <button class="cart__btn cart__btn--save">Save</button>
+      `;
+  
+      // Replace cart item
+      parentEl.replaceWith(editItem);
+  
+      // Edit mode quanity
+      editItem.querySelector(".cart__btn--increase").addEventListener("click", () => {
+        item.quantity += 1;
+        editItem.querySelector(".cart__quantity").textContent = item.quantity;
+        console.log(`Increased quantity ${item.quantity}`);
+      });
+  
+      editItem.querySelector(".cart__btn--decrease").addEventListener("click", () => {
+        if (item.quantity > 1) {
+          item.quantity -= 1;
+          editItem.querySelector(".cart__quantity").textContent = item.quantity;
+          console.log(`Decreased quantity ${item.quantity}`);
+        }
+      });
+  
+      // Save functionality
+      editItem.querySelector(".cart__btn--save").addEventListener("click", () => {
+        console.log(`Saved quantity: ${item.quantity}`);
+  
+        model.updateCart(id, item.quantity)
+          .then(() => model.getCart())
+          .then((updatedCart) => {
+            state.cart = updatedCart; 
+          })
+          .catch((error) => {
+            console.error(`Error updating cart quantity:`, error);
+          });
+      });
+    });
+  };
 
   const handleEditAmount = () => {
     console.log("handleEditAmount function initialized!"); 
@@ -302,7 +367,6 @@ const handleDelete = () => {
   };
 
   const init = () => {
-    console.log("Initializing Controller...");
 
     state.subscribe(() => {
         view.renderInventory(state.inventory);
@@ -311,16 +375,17 @@ const handleDelete = () => {
 
     Promise.all([model.getInventory(), model.getCart()])
       .then(([inventory, cart]) => {
-        console.log("Loaded Inventory and Cart:", inventory, cart);
         state.inventory = inventory;
         state.cart = cart;
       });
 
+    handleEdit();
     handleEditAmount();
     handleAddToCart();
     handleDelete();
     handleCheckout();
 };
+
   return {
     init,
   };
