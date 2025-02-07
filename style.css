@@ -172,3 +172,62 @@ body {
 .cart__checkout:hover {
   opacity: 0.8;
 }
+
+/*edit cart*/
+.cart__item--edit {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #f7f1d9; 
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+}
+
+.cart__btn--decrease {
+  background-color: #e74c3c; 
+  border: none;
+  color: white;
+  font-size: 12px;
+  font-weight: bold;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s;
+  margin: 0 5px;
+}
+
+.cart__btn--increase {
+  background-color: #4caf50; 
+  border: none;
+  color: white;
+  font-size: 12px;
+  font-weight: bold;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s;
+  margin: 0 5px;
+}
+
+.cart__btn--decrease:hover,
+.cart__btn--increase:hover {
+  opacity: 0.8;
+}
+
+.cart__btn--save {
+  background-color: white;
+  border: none;
+  color: black;
+  font-size: 12px;
+  font-weight: bold;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.cart__btn--save:hover {
+  background-color: #f0f0f0;
+
+}
