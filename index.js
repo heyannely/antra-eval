@@ -118,9 +118,13 @@ const View = (() => {
             (item) => `
             <div class="inventory__item" data-id="${item.id}">
               <span class="inventory__name">${item.content}</span>
-              <button class="inventory__btn inventory__btn--decrease">-</button>
-              <span class="inventory__quantity">${item.quantity}</span>
-              <button class="inventory__btn inventory__btn--increase">+</button>
+              
+              <div class="inventory__controls">
+                <button class="inventory__btn inventory__btn--decrease">-</button>
+                <span class="inventory__quantity">${item.quantity}</span>
+                <button class="inventory__btn inventory__btn--increase">+</button>
+              </div>
+
               <button class="inventory__btn inventory__btn--add">Add to Cart</button>
             </div>
           `
@@ -129,7 +133,7 @@ const View = (() => {
     `;
 
     console.log("Rendered Inventory:", inventory);
-  };
+};
 
   const renderCart = (cart) => {
     cartContainer.innerHTML = cart
