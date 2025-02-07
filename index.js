@@ -265,7 +265,32 @@ const Controller = ((model, view) => {
     });
 };
 
-  const handleDelete = () => {};
+const handleDelete = () => {
+  view.cartContainer.addEventListener("click", (event) => {
+    const target = event.target;
+    const parentEl = target.closest(".cart__item");
+    if (!parentEl) return;
+
+    if (!target.classList.contains("cart__btn--delete")) return;
+
+    const id = Number(parentEl.dataset.id);
+
+    console.log(`Deleting item`);
+
+    model.deleteFromCart(id)
+      .then(() => {
+        console.log(`Deleted ${id} from cart`);
+        return model.getCart();
+      })
+      .then((updatedCart) => {
+        state.cart = updatedCart;
+        console.log("Updated Cart after deletion:", updatedCart);
+      })
+      .catch((error) => {
+        console.error(`Error deleting item from cart:`, error);
+      });
+  });
+};
 
   const handleCheckout = () => {
     view.checkoutButton.addEventListener("click", () => {
@@ -293,9 +318,9 @@ const Controller = ((model, view) => {
 
     handleEditAmount();
     handleAddToCart();
+    handleDelete();
     handleCheckout();
 };
-
   return {
     init,
   };
