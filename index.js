@@ -104,6 +104,7 @@ const Model = (() => {
 
 const View = (() => {
   const inventoryContainer = document.querySelector(".inventory");
+  const cartContainer = document.querySelector(".cart__list");
   const checkoutButton = document.querySelector(".cart__checkout");
 
   console.log("Inventory Container:", inventoryContainer);
@@ -120,7 +121,7 @@ const View = (() => {
               <button class="inventory__btn inventory__btn--decrease">-</button>
               <span class="inventory__quantity">${item.quantity}</span>
               <button class="inventory__btn inventory__btn--increase">+</button>
-              <button class="inventory__btn inventory__btn--add">add to cart</button>
+              <button class="inventory__btn inventory__btn--add">Add to Cart</button>
             </div>
           `
           )
@@ -128,11 +129,29 @@ const View = (() => {
     `;
 
     console.log("Rendered Inventory:", inventory);
-};
+  };
+
+  const renderCart = (cart) => {
+    cartContainer.innerHTML = cart
+      .map(
+        (item) => `
+          <li class="cart__item" data-id="${item.id}">
+            <span class="cart__name">${item.content} x ${item.quantity}</span>
+            <button class="cart__btn cart__btn--edit">Edit</button>
+            <button class="cart__btn cart__btn--delete">Delete</button>
+          </li>
+        `
+      )
+      .join("");
+
+    console.log("Rendered Cart:", cart);
+  };
 
   return {
     renderInventory,
+    renderCart,
     inventoryContainer,
+    cartContainer,
     checkoutButton, 
   };
 })();
@@ -145,7 +164,50 @@ const Controller = ((model, view) => {
     
   };
 
-  const handleAddToCart = () => {};
+  const handleAddToCart = () => {
+    view.inventoryContainer.addEventListener("click", (event) => {
+      const target = event.target;
+      const parentEl = target.closest(".inventory__item");
+      if (!parentEl) return;
+  
+      if (!target.classList.contains("inventory__btn--add")) return;
+  
+      const id = Number(parentEl.dataset.id);
+      let item = state.inventory.find((inv) => Number(inv.id) === id);
+  
+      if (!item || item.quantity === 0) {
+        console.log("Cannot add item with zero quantity to cart.");
+        return;
+      }
+  
+      const cartItem = {
+        id: item.id,
+        content: item.content,
+        quantity: item.quantity,
+      };
+  
+
+      model.addToCart(cartItem)
+        .then(() => {
+          console.log(`Added ${item.content} x${item.quantity} to cart.`);
+          return model.getCart();
+        })
+        .then((updatedCart) => {
+          state.cart = updatedCart; 
+          console.log("Updated Cart:", updatedCart);
+        })
+        .catch((error) => {
+          console.error(`Error adding to cart:`, error);
+        });
+  
+      item.quantity = 0;
+      model.updateInventory(id, 0)
+        .then(() => model.getInventory())
+        .then((updatedInventory) => {
+          state.inventory = updatedInventory; 
+        });
+    });
+  };
 
   const handleEdit = () => {};
 
@@ -218,13 +280,16 @@ const Controller = ((model, view) => {
     console.log("Initializing Controller...");
 
     state.subscribe(() => {
-        view.renderInventory(state.inventory); 
+        view.renderInventory(state.inventory);
+        view.renderCart(state.cart);
     });
 
-    model.getInventory().then((inventory) => {
-        console.log("Fetched inventory from API:", inventory);
-        state.inventory = inventory; 
-    });
+    Promise.all([model.getInventory(), model.getCart()])
+      .then(([inventory, cart]) => {
+        console.log("Loaded Inventory and Cart:", inventory, cart);
+        state.inventory = inventory;
+        state.cart = cart;
+      });
 
     handleEditAmount();
     handleAddToCart();

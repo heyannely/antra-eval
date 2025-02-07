@@ -1,10 +1,31 @@
 {
-  "cart": [],
+  "cart": [
+    {
+      "id": "1",
+      "content": "apple",
+      "quantity": 1
+    },
+    {
+      "id": "2",
+      "content": "peach",
+      "quantity": 1
+    },
+    {
+      "id": "1",
+      "content": "apple",
+      "quantity": 2
+    },
+    {
+      "id": "2",
+      "content": "peach",
+      "quantity": 3
+    }
+  ],
   "inventory": [
     {
       "content": "apple",
       "id": "1",
-      "quantity": 0
+      "quantity": 4
     },
     {
       "content": "peach",
